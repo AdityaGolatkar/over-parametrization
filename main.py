@@ -98,9 +98,9 @@ def main():
     parser = argparse.ArgumentParser(description='Training a fully connected NN with one hidden layer')
     parser.add_argument('--no-cuda', default=False, action='store_true',
                         help='disables CUDA training')
-    parser.add_argument('--datadir', default='datasets', type=str,
+    parser.add_argument('--datadir', default='./data', type=str,
                         help='path to the directory that contains the datasets (default: datasets)')
-    parser.add_argument('--dataset', default='CIFAR10', type=str,
+    parser.add_argument('--dataset', default='MNIST', type=str,
                         help='name of the dataset (options: MNIST | CIFAR10 | CIFAR100 | SVHN, default: CIFAR10)')
     parser.add_argument('--nunits', default=1024, type=int,
                         help='number of hidden units (default: 1024)')
@@ -124,7 +124,8 @@ def main():
     if args.dataset == 'CIFAR100': nclasses = 100
 
     # create an initial model
-    model = nn.Sequential(nn.Linear(32 * 32 * nchannels, args.nunits), nn.ReLU(), nn.Linear(args.nunits, nclasses))
+    model = nn.Sequential(nn.Linear(32 * 32 * nchannels, args.nunits), nn.ReLU(), nn.Linear(args.nunits, args.nunits),     
+                          nn.ReLU(), nn.Linear(args.nunits, nclasses))
     model = model.to(device)
 
     # create a copy of the initial model to be used later
