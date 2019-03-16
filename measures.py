@@ -10,6 +10,7 @@ def calculate(model, init_model, device, train_loader, margin):
     init_model.eval()
 
     modules = list(model.children())
+    print(modules)
     init_modules = list(init_model.children())
 
     D = modules[0].weight.size(1) # data dimension
@@ -54,12 +55,12 @@ def calculate(model, init_model, device, train_loader, margin):
         L1max2 = modules[2].weight.norm(p=1, dim=1).max()
         # L_{1,infty} norm of the weight matrix in the third layer
         L1max3 = modules[4].weight.norm(p=1, dim=1).max()
-        # L_{2,1} distance of the weight matrix in the first layer to the initial weight matrix
-        L1Dist1 = diff1.norm(p=2, dim=1 ).sum()
-        # L_{2,1} distance of the weight matrix in the second layer to the initial weight matrix
-        L1Dist2 = diff2.norm(p=2, dim=1 ).sum()
-        # L_{2,1} distance of the weight matrix in the third layer to the initial weight matrix
-        L1Dist3 = diff3.norm(p=2, dim=1 ).sum()
+#         # L_{2,1} distance of the weight matrix in the first layer to the initial weight matrix
+#         L1Dist1 = diff1.norm(p=2, dim=1 ).sum()
+#         # L_{2,1} distance of the weight matrix in the second layer to the initial weight matrix
+#         L1Dist2 = diff2.norm(p=2, dim=1 ).sum()
+#         # L_{2,1} distance of the weight matrix in the third layer to the initial weight matrix
+#         L1Dist3 = diff3.norm(p=2, dim=1 ).sum()
 
         
         measure = {}
@@ -72,7 +73,7 @@ def calculate(model, init_model, device, train_loader, margin):
         measure['Spectral1'] = S1[0]
         measure['Spectral2'] = S2[0]
         measure['Spectral3'] = S3[0]
-        measure['Fro_Spec_Fro_Fro'] = Fro3 * Fro2 * (Fro1 + S01[0])
+        measure['Fro_Spec_Fro_Fro'] = Fro3 * Dist2 * (Dist1 + S01[0])
         
 #         measure['Fro_Fro_Fro'] = Fro1 * Fro2 * Fro3
 #         measure['L1max_L1max_L1max'] = L1max1 * L1max2 * L1max3
